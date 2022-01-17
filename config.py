@@ -1,0 +1,1 @@
+URL_STORE = 'http://test.gorkarta.ru:8383/RSLoyaltyStoreService'
