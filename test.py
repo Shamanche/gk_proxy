@@ -6,11 +6,18 @@ string2 = '<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/"
 
 
 root = etree.XML(body)
+transaction_element = root.find('.//{*}Body/')
+namespace_none = transaction_element.nsmap[None] 
+tranzaction_type = transaction_element.tag.replace('{' + namespace_none + '}', '')
 cheque = root.find('.//{*}cheque')
 cheque_xml = etree.XML(bytes(cheque.text, 'utf-16'))
-# cheque = root.find('.//{http://tempuri.org/}cheque')
-# root = ET.fromstring(string2)
-# tree = ET.ElementTree(root)
-# str = ET.tostring(root, encoding = 'unicode')
-# print(str)
+
+for cheque_line in cheque_xml.findall('.//ChequeLine'):
+    price = cheque_line.get('Price')
+    cheque_line.set('MinPrice', price)
+
+cheque_str = etree.tostring(cheque_xml).decode('utf-8')
+cheque.text = cheque_str
+body = etree.tostring(root)
+
 pass
