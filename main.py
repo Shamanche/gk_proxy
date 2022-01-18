@@ -9,14 +9,17 @@ app = Flask(__name__)
 
 @app.route('/', methods=['GET'])
 def test():
+    print('Получен GET запрос')
     return "It's OK"
 
 @app.route('/', methods=['POST'])
 def handler():
+    print('Получен POST запрос.')
     headers = dict(request.headers) # заголовки входящего запроса
     headers['Authorization'] ='Basic cGF0cmlrbWFyaVBPUy10ZXN0OnM2ZDN5OGVaNA==' #временно
     # data = request.data.decode('utf-8') # тело входящего запроса
     request_body = request.data # тело входящего запроса в bytes
+    print(request_body)
     root = etree.XML(request_body) # строим дерево xml
     if modify.transaction_type(root) == 'SubtractBonus45':
         response_body = modify.econom(root)
